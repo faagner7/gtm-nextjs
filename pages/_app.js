@@ -1,10 +1,18 @@
 import { useEffect } from 'react'
 import Script from 'next/script'
 import { useRouter } from 'next/router'
+import TagManager from 'react-gtm-module'
 import * as gtag from '../lib/gtag'
 
 const App = ({ Component, pageProps }) => {
   const router = useRouter()
+
+  useEffect(() => {
+    TagManager.initialize({
+      gtmId: process.env.NEXT_PUBLIC_GTM_ID,
+    })
+  }, [])
+
   useEffect(() => {
     const handleRouteChange = (url) => {
       gtag.pageview(url)
@@ -21,12 +29,12 @@ const App = ({ Component, pageProps }) => {
     <>
       {/* Global Site Tag (gtag.js) - Google Analytics */}
       <Script
-        strategy="afterInteractive"
+        strategy='afterInteractive'
         src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
       />
       <Script
-        id="gtag-init"
-        strategy="afterInteractive"
+        id='gtag-init'
+        strategy='afterInteractive'
         dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];
